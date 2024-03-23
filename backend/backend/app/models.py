@@ -15,18 +15,33 @@ class Seller(models.Model):
     password = models.CharField(max_length=255)
     phoneno = models.IntegerField()
 
+    def __str__(self):
+        return self.sellername
+
 class Store(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     storename = models.CharField(max_length=255)
     location = models.TextField()
 
+    def __str__(self):
+        return self.storename
+
+class Category(models.Model):
+    category = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.category
+
 class Product(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     productname = models.CharField(max_length=255)
     description = models.TextField()
-    category = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.IntegerField()
     stock = models.IntegerField()
+
+    def __str__(self):
+        return self.productname
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)

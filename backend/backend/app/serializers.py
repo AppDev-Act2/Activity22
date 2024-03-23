@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from app.models import Product, Store
+from app.models import Product, Store, Category
 # from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -11,6 +11,11 @@ class StoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
         fields = '__all__'
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'                
 
 # class UserCreateSerializer(BaseUserCreateSerializer):
 #     class Meta(BaseUserCreateSerializer.Meta):
