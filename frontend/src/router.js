@@ -6,6 +6,7 @@ import App from "./App";
 import ProductList from "./Products/Productlist";
 import Productbycatmen from "./Products/Productbycatmen";
 import Productbycatwomen from "./Products/Productvbycatwomen";
+import Addproduct from "./Allproducts";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
     {
       path: "/category/Women",
       element: <Productbycatwomen />
+    },
+    {
+      path: "/addproducts",
+      element: <Addproduct />
     },
   ]);
 

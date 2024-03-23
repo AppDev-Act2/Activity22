@@ -1,9 +1,72 @@
-//wala niy pulos hehe
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-import React from 'react';
+const Addproduct = () => {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        productname: '',
+        description: '',
+        category: '',
+        price: '',
+        stock: '',
+        store: '' // Add store field to formData state
+    });
+    const [stores, setStores] = useState([]);
+    const [category, setCategory] = useState([]);
 
+    useEffect(() => {
+        
+        const fetchStores = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/stores/');
+                setStores(response.data);
+            } catch (error) {
+                console.error('Error fetching stores:', error);
+            }
+        };
 
-const Allproducts = () => {
+        fetchStores();
+    }, []);
+
+    useEffect(() => {
+        
+        const fetchCategory = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/category/');
+                setCategory(response.data);
+            } catch (error) {
+                console.error('Error fetching stores:', error);
+            }
+        };
+
+        fetchCategory();
+    }, []);
+
+    const handleChange = e => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        try {
+            await axios.post('http://localhost:8000/products/', formData);
+            // Optionally, you can reset the form after successful submission
+            setFormData({
+                productname: '',
+                description: '',
+                category: '',
+                price: '',
+                stock: '',
+                store: '' // Reset store field to empty string
+            });
+            alert('Product added successfully!');
+            navigate('/products');
+        } catch (error) {
+            console.error('Error adding product:', error);
+            alert('An error occurred while adding the product.');
+        }
+    };
 
     return (
         <div>
@@ -29,7 +92,7 @@ const Allproducts = () => {
                     onChange={handleChange}
                 >
                     <option value="">Select Category</option>
-                    {categories.map(category => (
+                    {category.map(category => (
                         <option key={category.id} value={category.id}>
                             {category.category}
                         </option>
@@ -49,6 +112,8 @@ const Allproducts = () => {
                     value={formData.stock}
                     onChange={handleChange}
                 />
+                
+                
                 <select
                     name="store"
                     value={formData.store}
@@ -67,4 +132,4 @@ const Allproducts = () => {
     );
 };
 
-export default Allproducts;
+export default Addproduct;
