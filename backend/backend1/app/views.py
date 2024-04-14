@@ -1,9 +1,10 @@
 from rest_framework import status  # Add this import
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .models import Product, Category, Cart
 from .serializers import ProductSerializer, CategorySerializer, CartSerializer
 from rest_framework.renderers import JSONRenderer
+from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['POST'])
@@ -44,26 +45,26 @@ def get_product_by_id(request, product_id):
         return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def add_to_cart(request):
-    user_id = request.data.get('user_id')
-    product_id = request.data.get('product_id')
-    
-    try:
-        product = Product.objects.get(id=product_id)
-        cart = Cart.objects.create(user_id=user_id, product=product)
-        serializer = CartSerializer(cart)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    except Product.DoesNotExist:
-        return Response({"error": "Product does not exist."}, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    if request.method == 'POST':
+        user = request.user
+        product_id = request.data.get('product_id')
+        try:
+            product = Product.objects.get(id=product_id)
+            cart_item, created = Cart.objects.get_or_create(user=user, product=product)
+            if created:
+                return Response({"message": "Product added to cart successfully"}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"message": "Product already exists in cart"}, status=status.HTTP_200_OK)
+        except Product.DoesNotExist:
+            return Response({"error": "Product does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
-def view_cart(request, user_id):
-    try:
-        cart_items = Cart.objects.filter(user_id=user_id)
+@permission_classes([IsAuthenticated])
+def view_cart(request):
+    if request.method == 'GET':
+        user = request.user
+        cart_items = Cart.objects.filter(user=user)
         serializer = CartSerializer(cart_items, many=True)
         return Response(serializer.data)
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-

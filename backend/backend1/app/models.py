@@ -43,6 +43,9 @@ class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.user}, {self.product}"
+
 class Order(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     order_date = models.DateField(auto_now_add=True)

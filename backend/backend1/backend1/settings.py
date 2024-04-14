@@ -125,7 +125,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.AllowAny',
+        
     ),
 }
 
@@ -148,6 +150,18 @@ EMAIL_HOST_PASSWORD = 'bc3448822a71e4'
 EMAIL_PORT = '2525'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_HEADERS = {
+    'access-control-allow-origin',
+    'content-type'
+}
+
+
+# CORS_ORIGIN_WHITELIST = [
+#     'http://192.168.0.213:8081',
+# ]
 
 CORS_ALLOW_METHODS = (
     "DELETE",

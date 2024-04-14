@@ -7,7 +7,12 @@ export default function Cart({ userId }) {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/cart/${userId}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`http://127.0.0.1:8000/api/v1/cart/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        });
         setCartItems(response.data);
       } catch (error) {
         console.error('Error fetching cart items:', error);
@@ -23,8 +28,8 @@ export default function Cart({ userId }) {
       <ul>
         {cartItems.map(item => (
           <li key={item.id}>
-            <p>Product Name: {item.product_name}</p>
-            <p>Price: {item.price}</p>
+            <p>User: {item.user.email}</p> {/* Assuming 'email' is a field in the 'CustomUser' model */}
+            <p>Product: {item.product.product_name}</p> {/* Assuming 'product_name' is a field in the 'Product' model */}
             {/* Add other item details as needed */}
           </li>
         ))}

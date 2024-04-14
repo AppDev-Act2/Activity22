@@ -19,9 +19,10 @@ urlpatterns = [
     #tanan products para makita ni customer
     path('products/', get_all_products, name='get_all_products'),
 
+    #products by users
     path('products/<int:product_id>/', get_product_by_id, name='get_product_by_id'),
 
-
     path('cart/add/', add_to_cart, name='add_to_cart'),
-    path('cart/<int:user_id>/', view_cart, name='view_cart'),
+    path('cart/', view_cart, name='view_cart'),
+
 ]

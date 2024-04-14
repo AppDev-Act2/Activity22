@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-export default function Allproducts() {
+export default function AllProducts() {
   const [products, setProducts] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -33,24 +33,16 @@ export default function Allproducts() {
     }
 
     try {
-      const userData = await axios.get('http://127.0.0.1:8000/api/v1/auth/users/me', {
-        headers: {
-          Authorization: `Token ${localStorage.getItem('token')}`,
-        },
-      });
-      const userId = userData.data.id;
-  
-      // Add product to cart using user ID and product ID
-      const response = await axios.post(
-        'http://127.0.0.1:8000/api/v1/cart/add',
-        { user_id: userId, product_id: productId },
+      // Add product to cart
+      await axios.post(
+        'http://127.0.0.1:8000/api/v1/cart/add/',
+        { product_id: productId },
         {
           headers: {
             Authorization: `Token ${localStorage.getItem('token')}`,
           },
         }
       );
-      console.log(response.data);
       alert('Product added to cart successfully!');
     } catch (error) {
       console.error('Error adding product to cart:', error);
@@ -73,6 +65,7 @@ export default function Allproducts() {
           </li>
         ))}
       </ul>
+      {loggedIn && <Link to="/cart">View Cart</Link>}
     </div>
   );
 }
