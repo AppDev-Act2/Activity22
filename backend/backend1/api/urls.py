@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
-from app.views import add_product, user_products, get_categories, get_all_products, get_product_by_id, add_to_cart, view_cart
+from app.views import add_product, user_products, get_categories, get_all_products, get_product_by_id, add_to_cart, view_cart, change_username
+from app import views
 
 
 urlpatterns = [
@@ -25,4 +26,7 @@ urlpatterns = [
     path('cart/add/', add_to_cart, name='add_to_cart'),
     path('cart/', view_cart, name='view_cart'),
 
+    #accoun management
+    path('api/change-username/', change_username, name='change_username'),
+    path('change-username/', views.ChangeUsernameView.as_view(), name='change_username'),
 ]

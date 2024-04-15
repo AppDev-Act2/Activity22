@@ -35,6 +35,7 @@ class Product(models.Model):
     stock_large_size = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock_quantity = models.IntegerField(default=0)
+    image = models.ImageField(upload_to='product_images/', default='default_product_image.jpg')
 
     def __str__(self):
         return self.product_name
@@ -44,7 +45,7 @@ class Cart(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.user}, {self.product}"
+        return f"{self.user.username}, {self.product}"
 
 class Order(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)

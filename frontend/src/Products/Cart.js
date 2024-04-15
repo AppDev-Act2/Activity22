@@ -13,7 +13,22 @@ export default function Cart({ userId }) {
             Authorization: `Token ${token}`,
           },
         });
-        setCartItems(response.data);
+        
+        // Fetch product details for each item in the cart
+        const productDetailsPromises = response.data.map(async (item) => {
+          const productResponse = await axios.get(`http://127.0.0.1:8000/api/v1/products/${item.product}/`, {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          });
+          console.log('Product details:', productResponse.data); // Add logging
+          return { ...item, productDetails: productResponse.data };
+        });
+        
+        // Wait for all product detail requests to finish
+        const cartItemsWithProductDetails = await Promise.all(productDetailsPromises);
+
+        setCartItems(cartItemsWithProductDetails);
       } catch (error) {
         console.error('Error fetching cart items:', error);
       }
@@ -28,8 +43,15 @@ export default function Cart({ userId }) {
       <ul>
         {cartItems.map(item => (
           <li key={item.id}>
-            <p>User: {item.user.email}</p> {/* Assuming 'email' is a field in the 'CustomUser' model */}
-            <p>Product: {item.product.product_name}</p> {/* Assuming 'product_name' is a field in the 'Product' model */}
+            <p>User: {item.user.email}</p>
+            {item.productDetails ? ( // Add conditional rendering
+              <>
+                <p>Product: {item.productDetails.product_name}</p>
+                <p>Price: {item.productDetails.price}</p>
+              </>
+            ) : (
+              <p>Loading product details...</p>
+            )}
             {/* Add other item details as needed */}
           </li>
         ))}

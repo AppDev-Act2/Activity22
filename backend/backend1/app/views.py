@@ -1,10 +1,14 @@
 from rest_framework import status  # Add this import
 from rest_framework.decorators import api_view, permission_classes
+from django.views.decorators.http import require_POST
 from rest_framework.response import Response
 from .models import Product, Category, Cart
 from .serializers import ProductSerializer, CategorySerializer, CartSerializer
 from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import IsAuthenticated
+from django.http import JsonResponse
+from .serializers import CustomUserSerializer
+from rest_framework.views import APIView
 
 
 @api_view(['POST'])
@@ -68,3 +72,26 @@ def view_cart(request):
         cart_items = Cart.objects.filter(user=user)
         serializer = CartSerializer(cart_items, many=True)
         return Response(serializer.data)
+    
+#change username
+@require_POST
+def change_username(request):
+    if request.user.is_authenticated:
+        new_username = request.POST.get('new_username')
+        if new_username:
+            user = request.user
+            user.username = new_username
+            user.save()
+            return JsonResponse({'message': 'Username changed successfully.'})
+        else:
+            return JsonResponse({'error': 'New username is required.'}, status=400)
+    else:
+        return JsonResponse({'error': 'User not authenticated.'}, status=401)
+    
+class ChangeUsernameView(APIView):
+    def post(self, request):
+        serializer = CustomUserSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
