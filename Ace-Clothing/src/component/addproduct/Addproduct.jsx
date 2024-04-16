@@ -61,14 +61,23 @@ export default function AddProduct() {
       });
       const userId = userData.data.id;
 
-      const productDataWithUserId = {
-        ...productData,
-        user: userId,
-      };
+      const formData = new FormData();
+      formData.append('product_name', productData.product_name);
+      formData.append('description', productData.description);
+      formData.append('category', productData.category);
+      formData.append('price', productData.price);
+      formData.append('stock_quantity', productData.stock_quantity);
+      formData.append('stock_small_size', productData.stock_small_size);
+      formData.append('stock_medium_size', productData.stock_medium_size);
+      formData.append('stock_large_size', productData.stock_large_size);
+      formData.append('image', productData.image); // Append the image file
 
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/add_product/', productDataWithUserId, {
+      formData.append('user', userId); // Append the user ID
+
+      const response = await axios.post('http://127.0.0.1:8000/api/v1/add_product/', formData, {
         headers: {
           Authorization: `Token ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
         },
       });
 
@@ -88,6 +97,7 @@ export default function AddProduct() {
       console.error('Error adding product:', error.response.data);
     }
   };
+
 
   return (
     <div style={{ margin: '20px auto', maxWidth: '600px', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>

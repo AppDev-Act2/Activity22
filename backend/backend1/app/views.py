@@ -2,13 +2,15 @@ from rest_framework import status  # Add this import
 from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.http import require_POST
 from rest_framework.response import Response
-from .models import Product, Category, Cart
+from .models import Product, Category, Cart, Review
 from .serializers import ProductSerializer, CategorySerializer, CartSerializer
 from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, ReviewSerializer
 from rest_framework.views import APIView
+from rest_framework import generics, permissions
+
 
 
 @api_view(['POST'])
@@ -95,3 +97,31 @@ class ChangeUsernameView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_review(request):
+    if request.method == 'POST':
+        serializer = ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response({"message": "Review added successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def get_reviews_for_product(request, product_id):
+    try:
+        reviews = Review.objects.filter(product_id=product_id)
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)
+    except Review.DoesNotExist:
+        return Response({"error": "No reviews found for this product"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_all_reviews(request):
+    try:
+        reviews = Review.objects.all()
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)
+    except Review.DoesNotExist:
+        return Response({"error": "No reviews found"}, status=status.HTTP_404_NOT_FOUND)

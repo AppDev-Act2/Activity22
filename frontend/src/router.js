@@ -12,6 +12,7 @@ import Register from "./Authentication/Register";
 import Sellerproductlist from "./Products/Sellerproductlist";
 import Allproducts from "./Products/Allproducts";
 import ProductDetails from "./Products/ProductDetails";
+import Review from "./Products/Review";
 
 const router = createBrowserRouter([
     {
@@ -58,6 +59,11 @@ const router = createBrowserRouter([
         path: "/products/:productId",
         element: <ProductDetails />
     },
+    {
+        path: "/write-review/:productId",
+        element: <Review />
+    },
 ]);
+
 
 export default router;

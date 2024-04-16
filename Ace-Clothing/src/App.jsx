@@ -20,6 +20,7 @@ import Addproduct from "./component/addproduct/Addproduct";
 import Login from "./authentication/Login";
 import Register from "./authentication/Register";
 import Profile from "./authentication/Profile";
+import Review from "./component/review/Review";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<Register />}></Route>
       <Route path="/profile" element={<Profile />}></Route>
+      <Route path="/reviews" element={<Review />}></Route>
     </Route>
   )
 );

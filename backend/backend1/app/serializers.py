@@ -6,7 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
 from django.core.validators import RegexValidator
 from rest_framework.settings import api_settings
-from .models import Product, Category, Cart
+from .models import Product, Category, Cart, Review
 
 User = get_user_model()
 
@@ -78,4 +78,9 @@ class CategorySerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
+        fields = '__all__'
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
         fields = '__all__'

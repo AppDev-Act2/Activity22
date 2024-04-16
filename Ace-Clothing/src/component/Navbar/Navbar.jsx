@@ -61,6 +61,9 @@ function Navigations({ toggleShowCart }) {
           <NavLink to="/explore/all">Products</NavLink>
         </li>
         <li className="nav-link">
+          <NavLink to="/reviews">Reviews</NavLink>
+        </li>
+        <li className="nav-link">
           <NavLink to="/addproduct">Add Products</NavLink>
         </li>
         <li className="nav-link">
