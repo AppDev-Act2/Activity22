@@ -134,7 +134,7 @@ function ExploreProduct() {
         {djproducts.map(product => (
           <div key={product.id} className="product-card_wrapper">
             <div className="product-card_img">
-              <img src={product.image} />
+              <img src={`http://127.0.0.1:8000${product.image}`} />
             </div>
             <div className="product-card_description">
               <h3>{product.product_name}</h3>
