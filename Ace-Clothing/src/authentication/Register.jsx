@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import http from '../utils/fetchFromApi';
+import './Register.css'
 
 export default function Register() {
     const [userData, setUserData] = useState({
@@ -24,9 +26,8 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/users/', userData);
+            const response = await http.post('http://127.0.0.1:8000/api/v1/auth/users/', userData);
             console.log('User created successfully:', response.data);
-            // Clear form fields after successful registration
             setUserData({
                 first_name: '',
                 last_name: '',
@@ -43,11 +44,11 @@ export default function Register() {
     };
 
     return (
-        <div>
-            <h1>Create User</h1>
-            {error && <p>{error}</p>}
+        <div className="register-form">
+            <h1>Welcome! Let's Get You Started</h1>
+            {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleSubmit}>
-                <label htmlFor="first_name">First Name:</label>
+                <label htmlFor="first_name">First Name</label>
                 <input
                     type="text"
                     id="first_name"
@@ -56,7 +57,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     required
                 />
-                <label htmlFor="last_name">Last Name:</label>
+                <label htmlFor="last_name">Last Name</label>
                 <input
                     type="text"
                     id="last_name"
@@ -65,7 +66,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     required
                 />
-                <label htmlFor="username">Username:</label>
+                <label htmlFor="username">Username</label>
                 <input
                     type="text"
                     id="username"
@@ -74,7 +75,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     required
                 />
-                <label htmlFor="birthdate">Birthdate:</label>
+                <label htmlFor="birthdate">Birthdate</label>
                 <input
                     type="date"
                     id="birthdate"
@@ -83,7 +84,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     required
                 />
-                <label htmlFor="email">Email:</label>
+                <label htmlFor="email">Email</label>
                 <input
                     type="email"
                     id="email"
@@ -92,7 +93,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     required
                 />
-                <label htmlFor="password">Password:</label>
+                <label htmlFor="password">Password</label>
                 <input
                     type="password"
                     id="password"
@@ -101,7 +102,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     required
                 />
-                <label htmlFor="confirm_password">Confirm Password:</label>
+                <label htmlFor="confirm_password">Confirm Password</label>
                 <input
                     type="password"
                     id="confirm_password"
@@ -110,7 +111,7 @@ export default function Register() {
                     onChange={handleInputChange}
                     required
                 />
-                <button type="submit">Register</button>
+                <button type="submit" className="register-button">Register</button>
             </form>
         </div>
     );

@@ -1,7 +1,7 @@
 import React from "react";
-import photo1 from "../../assets/images/home-photo-1.webp";
-import photo2 from "../..//assets/images/home-photo-2.webp";
-import photo3 from "../../assets/images/home-photo-3.webp";
+import photo1 from "../../assets/images/barbieboysiu_1200x.webp";
+import photo2 from "../..//assets/images/595b9a82c2508132a2e99e1a-large.webp";
+import photo3 from "../../assets/images/uuupw2o9i7m81.jpg";
 
 import "./HomePhotoShoot.css";
 

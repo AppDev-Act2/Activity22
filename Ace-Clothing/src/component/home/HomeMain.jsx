@@ -7,6 +7,7 @@ function HomeMain() {
   return (
     <main className="home-main container">
       <HomeInfo />
+      <HomePhotoShoot />
     </main>
   );
 }

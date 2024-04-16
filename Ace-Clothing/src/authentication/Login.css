@@ -23,6 +23,8 @@
     border: none;
     border-radius: 8px;
     /* Add rounded corners */
+    height: 60px;
+    font-size: 17px;
 }
 
 .login-container button {
@@ -40,4 +42,5 @@
 
 .login-container h1 {
     margin-bottom: 20px;
+    font-size: 50px;
 }

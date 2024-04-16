@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css'; // Import the CSS file for styling
+import http from '../utils/fetchFromApi';
+
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -10,7 +12,7 @@ export default function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/token/login', {
+            const response = await http.post('auth/token/login', {
                 email,
                 password
             });

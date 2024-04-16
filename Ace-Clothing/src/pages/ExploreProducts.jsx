@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import Shimmer from "../component/shimmer/Shimmer";
 import axios from 'axios';
 import "../component/explore/ProductCard.css";
+import http from "../utils/fetchFromApi";
+
 
 function ExploreProduct() {
   //akong version
@@ -21,13 +23,13 @@ function ExploreProduct() {
           // If user is not logged in, do not fetch products
           return;
         }
-        const userData = await axios.get('http://127.0.0.1:8000/api/v1/auth/users/me', {
+        const userData = await http.get('auth/users/me', {
           headers: {
             Authorization: `Token ${token}`,
           },
         });
         const userId = userData.data.id;
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/user_products/${userId}/`, {
+        const response = await http.get(`/user_products/${userId}/`, {
           headers: {
             Authorization: `Token ${token}`,
           },

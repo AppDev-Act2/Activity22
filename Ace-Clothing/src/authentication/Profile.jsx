@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import http from '../utils/fetchFromApi';
+
 
 export default function Profile() {
     const token = localStorage.getItem('token');
@@ -12,7 +14,7 @@ export default function Profile() {
     useEffect(() => {
         if (token) {
             // Fetch user data using the token
-            axios.get('http://127.0.0.1:8000/api/v1/auth/users/me', {
+            http.get('auth/users/me', {
                 headers: {
                     Authorization: `Token ${token}`
                 }
@@ -28,7 +30,7 @@ export default function Profile() {
     }, [token]);
 
     const handleChangeUsername = () => {
-        axios.patch('http://127.0.0.1:8000/api/v1/change-username', {
+        http.patch('change-username', {
             username: newUsername
         }, {
             headers: {
@@ -67,9 +69,9 @@ export default function Profile() {
                             <p style={{ fontSize: 15, marginTop: 10, fontWeight: 'bold' }}>Username:</p>
                             <p style={{ fontSize: 25, }}>{userData.username}</p>
 
-                            <input type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} />
+                            {/* <input type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} />
                             <button onClick={handleChangeUsername}>Change Username</button>
-                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                            {error && <p style={{ color: 'red' }}>{error}</p>} */}
                         </div>
                     </div>
                 ) : (

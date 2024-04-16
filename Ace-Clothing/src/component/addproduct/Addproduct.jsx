@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import http from '../../utils/fetchFromApi';
+
 
 export default function AddProduct() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -27,7 +29,7 @@ export default function AddProduct() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/categories/');
+        const response = await http.get('categories/');
         setCategories(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -54,18 +56,19 @@ export default function AddProduct() {
 
   const handleAddProduct = async () => {
     try {
-      const userData = await axios.get('http://127.0.0.1:8000/api/v1/auth/users/me', {
+      const userData = await http.get('auth/users/me', {
         headers: {
           Authorization: `Token ${localStorage.getItem('token')}`,
         },
       });
       const userId = userData.data.id;
+      const adjustedPrice = parseFloat(productData.price) + 50;
 
       const formData = new FormData();
       formData.append('product_name', productData.product_name);
       formData.append('description', productData.description);
       formData.append('category', productData.category);
-      formData.append('price', productData.price);
+      formData.append('price', adjustedPrice);
       formData.append('stock_quantity', productData.stock_quantity);
       formData.append('stock_small_size', productData.stock_small_size);
       formData.append('stock_medium_size', productData.stock_medium_size);
