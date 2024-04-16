@@ -1,0 +1,43 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    /* Center the container vertically */
+}
+
+.login-container form {
+    width: 400px;
+    /* Adjust as needed */
+    margin-top: 20px;
+    /* Add some space between the title and form */
+}
+
+.login-container input,
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    /* Add spacing between input fields and button */
+    border: none;
+    border-radius: 8px;
+    /* Add rounded corners */
+}
+
+.login-container button {
+    background-color: #007bff;
+    /* Blue color, adjust as needed */
+    color: #fff;
+    /* White text color */
+    cursor: pointer;
+}
+
+.login-container button:hover {
+    background-color: #0056b3;
+    /* Darker blue color on hover */
+}
+
+.login-container h1 {
+    margin-bottom: 20px;
+}
