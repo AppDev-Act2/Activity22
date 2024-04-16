@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from app.views import add_product, user_products, get_categories, get_all_products, get_product_by_id, add_to_cart, view_cart, change_username, add_review,get_reviews_for_product, get_all_reviews
+from app.views import add_product, user_products, get_categories, get_all_products, get_product_by_id, add_to_cart, view_cart, change_username, add_review,get_reviews_for_product, get_all_reviews, update_product
 from app import views
 
 urlpatterns = [
@@ -36,5 +36,7 @@ urlpatterns = [
     path('add_review/', add_review, name='add_review'),
     path('get_reviews/<int:product_id>/', get_reviews_for_product, name='get_reviews_for_product'),
     path('get_reviews/', get_all_reviews, name='get_all_reviews'),
+
+    path('products/<int:product_id>/update/', update_product, name='update_product'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

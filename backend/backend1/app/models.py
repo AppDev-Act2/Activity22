@@ -63,3 +63,16 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review by {self.user.username} for {self.product.product_name}"
+    
+
+# class Product(models.Model):
+#     # Your existing fields
+
+#     def update(self, validated_data):
+#         # Update fields based on validated data
+#         for attr, value in validated_data.items():
+#             setattr(self, attr, value)
+#         self.save()
+#         return self
+    
+

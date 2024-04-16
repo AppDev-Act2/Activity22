@@ -62,6 +62,7 @@ export default function AllProducts() {
             <p>Price: {product.price}</p>
             {loggedIn && <button onClick={() => handleAddToCart(product.id)}>Add to Cart</button>}
             <Link to={`/products/${product.id}`}>View Details</Link>
+            {loggedIn && <Link to={`/editproduct/${product.id}`}>Edit Product</Link>}
           </li>
         ))}
       </ul>

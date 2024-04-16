@@ -125,3 +125,22 @@ def get_all_reviews(request):
         return Response(serializer.data)
     except Review.DoesNotExist:
         return Response({"error": "No reviews found"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_product(request, product_id):
+    try:
+        product = Product.objects.get(id=product_id)
+        if product.user != request.user:
+            return Response({"error": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+        
+        serializer = ProductSerializer(instance=product, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Product.DoesNotExist:
+        return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+
+    

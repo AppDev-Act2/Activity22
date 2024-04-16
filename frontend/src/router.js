@@ -13,6 +13,7 @@ import Sellerproductlist from "./Products/Sellerproductlist";
 import Allproducts from "./Products/Allproducts";
 import ProductDetails from "./Products/ProductDetails";
 import Review from "./Products/Review";
+import EditProduct from "./Products/EditProduct";
 
 const router = createBrowserRouter([
     {
@@ -63,7 +64,10 @@ const router = createBrowserRouter([
         path: "/write-review/:productId",
         element: <Review />
     },
+    {
+        path: "/editproduct/:productId",
+        element: <EditProduct />
+    },
 ]);
-
 
 export default router;

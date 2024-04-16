@@ -4,7 +4,7 @@ import fetchFromApi from "../utils/fetchFromApi";
 import SelectCategory from "../component/explore/SelectCategory";
 import PriceFilter from "../component/explore/PriceFilter";
 import "./ExploreProducts.css";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Shimmer from "../component/shimmer/Shimmer";
 import axios from 'axios';
 import "../component/explore/ProductCard.css";
@@ -145,6 +145,7 @@ function ExploreProduct() {
                 <b className="product-card_price">${product.price}</b>
               </span>
             </div>
+            <Link to={`/editproduct/${product.id}`}>Edit Product</Link>
           </div>
         ))}
       </div>
