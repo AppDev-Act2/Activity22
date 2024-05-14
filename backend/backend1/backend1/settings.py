@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-if5ftc6)#c!m)2h6!_8jw9r0j2at$-(h!43aqmowqeloclk@*k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['192.168.0.213']
 
 
 # Application definition
@@ -154,7 +154,7 @@ EMAIL_PORT = '2525'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = {
     'access-control-allow-origin',

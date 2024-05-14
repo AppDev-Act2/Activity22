@@ -39,4 +39,4 @@ urlpatterns = [
 
     path('products/<int:product_id>/update/', update_product, name='update_product'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

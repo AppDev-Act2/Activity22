@@ -61,10 +61,6 @@ class CustomUserSerializer(UserSerializer):
         )
         read_only_fields = ('id', 'first_name', 'last_name', 'username')
 
-
-
-
-
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product

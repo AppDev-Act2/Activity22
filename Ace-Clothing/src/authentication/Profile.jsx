@@ -59,7 +59,10 @@ export default function Profile() {
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
             {token ? (
                 userData ? (
-                    <div style={{ height: '300px', width: '300px', border: '2px solid #ccc', borderRadius: '5px', padding: '20px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                    <div style={{ height: '400px', width: '300px', border: '2px solid #ccc', borderRadius: '5px', padding: '20px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                        <div style={{ width: '100%', justifyContent: 'center', display: 'flex' }}>
+                            <img src='https://media.tenor.com/yskj0PnyEpoAAAAM/borpynino.gif' style={{ width: 150, height: 150, borderRadius: 100 }} />
+                        </div>
                         <h1>Profile</h1>
                         <div>
                             <p style={{ fontSize: 15, marginTop: 10, fontWeight: 'bold' }}>First Name:</p>
@@ -81,11 +84,14 @@ export default function Profile() {
                 <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '40px' }}>Please log in to see your profile.</p>
                 </div>
-            )}
-            {token && <button onClick={handleLogout} style={{
-                width: '200px', height: '35px', marginTop: 15,
-                background: 'red', borderRadius: 13, color: 'white'
-            }}>Logout</button>}
-        </div>
+            )
+            }
+            {
+                token && <button onClick={handleLogout} style={{
+                    width: '200px', height: '35px', marginTop: 15,
+                    background: 'red', borderRadius: 13, color: 'white'
+                }}>Logout</button>
+            }
+        </div >
     );
 }

@@ -47,32 +47,41 @@ class Cart(models.Model):
     def __str__(self):
         return f"{self.user.username}, {self.product}"
 
-class Order(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    order_date = models.DateField(auto_now_add=True)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"Order #{self.id}"
-
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     review = models.TextField(max_length=255)
+    variation = models.TextField(max_length=255)
+    productQuality = models.TextField(max_length=255)
+    performance = models.TextField(max_length=255)
+    bestFeatures = models.TextField(max_length=255)
 
     def __str__(self):
         return f"Review by {self.user.username} for {self.product.product_name}"
     
+class Ewallet(models.Model):
+    name = models.TextField(max_length=255)
+    balance  = models.IntegerField()
 
-# class Product(models.Model):
-#     # Your existing fields
+class Checkout(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    address = models.TextField(max_length=255)
+    city = models.TextField(max_length=255)
+    payment = models.ForeignKey(Ewallet, on_delete=models.CASCADE)
 
-#     def update(self, validated_data):
-#         # Update fields based on validated data
-#         for attr, value in validated_data.items():
-#             setattr(self, attr, value)
-#         self.save()
-#         return self
+    def __str__(self):
+        return f" {self.cart}"
+    
+class Order(models.Model):
+    checkout = models.ForeignKey(Checkout, on_delete=models.CASCADE)
+    userId = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    orderstatus = models.TextField(max_length=255)
+    total_amount = models.TextField(max_length=255)
+    order_date = models.CharField(max_length=255)
+
+
+
+    
+
     
 

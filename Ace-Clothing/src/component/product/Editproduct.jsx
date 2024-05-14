@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import http from '../../utils/fetchFromApi';
+
 
 export default function EditProduct() {
     const { productId } = useParams(); // Access route parameters using useParams
@@ -20,7 +22,7 @@ export default function EditProduct() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/v1/products/${productId}`);
+                const response = await http.get(`products/${productId}`);
                 setProduct(response.data);
                 setFormData({
                     product_name: response.data.product_name,
@@ -56,8 +58,8 @@ export default function EditProduct() {
                 return;
             }
 
-            await axios.put(
-                `http://127.0.0.1:8000/api/v1/products/${productId}/update/`,
+            await http.put(
+                `products/${productId}/update/`,
                 formData,
                 {
                     headers: {

@@ -66,39 +66,39 @@ function ExploreProduct() {
     setCheckBoxState({ ...resetCheckBoxState, [category]: true });
   }, [category]);
 
-  useEffect(() => {
-    async function getData() {
-      let res = await fetchFromApi("products");
-      function getFilteredData() {
-        // if both men and women checkbox are not true than load both men's and women's clothing
-        // we are filtering this since the default request also provide result for category that we don't want
-        if (!checkBoxState.men && !checkBoxState.women) {
-          let filteredData = res.filter((product) => {
-            return (
-              product.category === "men's clothing" ||
-              product.category === "women's clothing"
-            );
-          });
-          return filteredData;
-        }
+  // useEffect(() => {
+  //   async function getData() {
+  //     let res = await fetchFromApi("products");
+  //     function getFilteredData() {
+  //       // if both men and women checkbox are not true than load both men's and women's clothing
+  //       // we are filtering this since the default request also provide result for category that we don't want
+  //       if (!checkBoxState.men && !checkBoxState.women) {
+  //         let filteredData = res.filter((product) => {
+  //           return (
+  //             product.category === "men's clothing" ||
+  //             product.category === "women's clothing"
+  //           );
+  //         });
+  //         return filteredData;
+  //       }
 
-        let filteredData = res.filter((product) => {
-          if (checkBoxState.men && product.category === "men's clothing") {
-            return product;
-          } else if (
-            checkBoxState.women &&
-            product.category === "women's clothing"
-          ) {
-            return product;
-          }
-        });
-        return filteredData;
-      }
-      setProducts(getFilteredData());
-      setPriceFilter("default");
-    }
-    getData();
-  }, [checkBoxState]);
+  //       let filteredData = res.filter((product) => {
+  //         if (checkBoxState.men && product.category === "men's clothing") {
+  //           return product;
+  //         } else if (
+  //           checkBoxState.women &&
+  //           product.category === "women's clothing"
+  //         ) {
+  //           return product;
+  //         }
+  //       });
+  //       return filteredData;
+  //     }
+  //     setProducts(getFilteredData());
+  //     setPriceFilter("default");
+  //   }
+  //   getData();
+  // }, [checkBoxState]);
 
   function handleCategoryCheckBox(e) {
     let { name, checked } = e.target;
@@ -124,25 +124,17 @@ function ExploreProduct() {
 
   return (
     <main className="product-main">
-      <PriceFilter
-        priceFlter={priceFlter}
-        handlePriceFilter={handlePriceFilter}
-      />
-      <SelectCategory
-        checkBoxState={checkBoxState}
-        handleCheckBox={handleCategoryCheckBox}
-      />
       <div className="products-container">
         {djproducts.map(product => (
           <div key={product.id} className="product-card_wrapper">
             <div className="product-card_img">
-              <img src={`http://127.0.0.1:8000${product.image}`} />
+              <img src={`http://192.168.0.213:8000/${product.image}`} />
             </div>
             <div className="product-card_description">
               <h3>{product.product_name}</h3>
               <p>{product.description}</p>
               <span className="product-card_bottom">
-                <b className="product-card_price">${product.price}</b>
+                <b className="product-card_price">P{product.price}</b>
               </span>
             </div>
             <Link to={`/editproduct/${product.id}`}>Edit Product</Link>

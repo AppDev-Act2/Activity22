@@ -77,7 +77,7 @@ export default function AddProduct() {
 
       formData.append('user', userId); // Append the user ID
 
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/add_product/', formData, {
+      const response = await http.post('add_product/', formData, {
         headers: {
           Authorization: `Token ${localStorage.getItem('token')}`,
           'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
