@@ -6,7 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
 from django.core.validators import RegexValidator
 from rest_framework.settings import api_settings
-from .models import Product, Category, Cart, Review
+from .models import Product, Category, Cart, Review, Checkout, Ewallet, Order
 
 User = get_user_model()
 
@@ -80,3 +80,23 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
+
+class EwalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ewallet
+        fields = '__all__'
+
+class CheckoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Checkout
+        fields = ['cart', 'buyer', 'address', 'total_amount']
+    
+
+class OrderSerializer(serializers.ModelSerializer):
+    cart = serializers.PrimaryKeyRelatedField(many=True, queryset=Cart.objects.all())
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+

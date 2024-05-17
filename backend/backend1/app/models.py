@@ -34,18 +34,17 @@ class Product(models.Model):
     stock_medium_size = models.IntegerField(default=0)
     stock_large_size = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock_quantity = models.IntegerField(default=0)
     image = models.ImageField(upload_to='images/')
 
     def __str__(self):
         return self.product_name
 
 class Cart(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+
     def __str__(self):
-        return f"{self.user.username}, {self.product}"
+        return f"{self.product.product_name}"
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -63,21 +62,22 @@ class Ewallet(models.Model):
     name = models.TextField(max_length=255)
     balance  = models.IntegerField()
 
-class Checkout(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    address = models.TextField(max_length=255)
-    city = models.TextField(max_length=255)
-    payment = models.ForeignKey(Ewallet, on_delete=models.CASCADE)
-
     def __str__(self):
-        return f" {self.cart}"
+        return f'{self.name} - {self.balance}'   
     
 class Order(models.Model):
-    checkout = models.ForeignKey(Checkout, on_delete=models.CASCADE)
-    userId = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    orderstatus = models.TextField(max_length=255)
-    total_amount = models.TextField(max_length=255)
-    order_date = models.CharField(max_length=255)
+    cart = models.ManyToManyField(Cart, through='Checkout')
+    buyer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    address = models.CharField(max_length=255)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+class Checkout(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+
+    # def __str__(self):
+    #     return f'{self.cart..id} - {self.order.id}'
 
 
 

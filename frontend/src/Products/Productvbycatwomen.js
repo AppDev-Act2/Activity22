@@ -7,7 +7,7 @@ const Productbycatwomen = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/Women/products/');
+                const response = await axios.get('http://localhost:8000/api/v1/products/category/Women/');
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -23,7 +23,7 @@ const Productbycatwomen = () => {
             <ul>
                 {products.map(product => (
                     <div key={product.id}>
-                        <li>{product.productname}</li>
+                        <li>{product.product_name}</li>
                         <li>{product.description}</li>
                         <li>{product.category}</li>
                     </div>

@@ -3,40 +3,39 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from app.views import add_product, user_products, get_categories, get_all_products, get_product_by_id, add_to_cart, view_cart, change_username, add_review,get_reviews_for_product, get_all_reviews, update_product
+from app.views import (
+    CategoryListCreateView, CategoryDetailView,
+    ProductListCreateView, ProductDetailView,
+    CartListCreateView, CartDetailView,
+    ReviewListCreateView, ReviewDetailView,
+    EwalletListCreateView, EwalletDetailView,
+    CheckoutListCreateView, CheckoutDetailView,
+    OrderListCreateView, OrderDetailView,
+    ProductsByCategoryView, SellerOrderListView)
 from app import views
 
 urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
 
-    #for adding of products
-    path('add_product/', add_product, name='add_product'),
+    path('categories/', CategoryListCreateView.as_view(), name='category-list-create'),
+    path('categories/<int:pk>/', CategoryDetailView.as_view(), name='category-detail'),
+    path('products/', ProductListCreateView.as_view(), name='product-list-create'),
+    path('products/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
+    path('carts/', CartListCreateView.as_view(), name='cart-list-create'),
+    path('carts/<int:pk>/', CartDetailView.as_view(), name='cart-detail'),
+    path('reviews/', ReviewListCreateView.as_view(), name='review-list-create'),
+    path('reviews/<int:pk>/', ReviewDetailView.as_view(), name='review-detail'),
+    path('ewallets/', EwalletListCreateView.as_view(), name='ewallet-list-create'),
+    path('ewallets/<int:pk>/', EwalletDetailView.as_view(), name='ewallet-detail'),
+    path('checkouts/', CheckoutListCreateView.as_view(), name='checkout-list-create'),
+    path('checkouts/<int:pk>/', CheckoutDetailView.as_view(), name='checkout-detail'),
+    path('orders/', OrderListCreateView.as_view(), name='order-list-create'),
+    path('orders/<int:pk>/', OrderDetailView.as_view(), name='order-detail'),
 
-    #products by user(seller)
-    path('user_products/<int:user_id>/', user_products, name='user_products'),
 
-    path('categories/', get_categories, name='categories'),
+    path('products/bycategory/<int:category_id>/', ProductsByCategoryView.as_view(), name='products-by-category'),
+    path('seller/orders/', SellerOrderListView.as_view(), name='seller_orders'),
 
-    #tanan products para makita ni customer
-    path('products/', get_all_products, name='get_all_products'),
-
-    #products by users
-    path('products/<int:product_id>/', get_product_by_id, name='get_product_by_id'),
-
-    path('cart/add/', add_to_cart, name='add_to_cart'),
-    path('cart/', view_cart, name='view_cart'),
-
-    #accoun management
-    path('api/change-username/', change_username, name='change_username'),
-    path('change-username/', views.ChangeUsernameView.as_view(), name='change_username'),
-
-    #review
-    # path('review/', ReviewCreate.as_view(), name='review-create'),
-    path('add_review/', add_review, name='add_review'),
-    path('get_reviews/<int:product_id>/', get_reviews_for_product, name='get_reviews_for_product'),
-    path('get_reviews/', get_all_reviews, name='get_all_reviews'),
-
-    path('products/<int:product_id>/update/', update_product, name='update_product'),
 
 ]

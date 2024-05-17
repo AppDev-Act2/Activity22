@@ -14,6 +14,8 @@ import Allproducts from "./Products/Allproducts";
 import ProductDetails from "./Products/ProductDetails";
 import Review from "./Products/Review";
 import EditProduct from "./Products/EditProduct";
+import Checkout from "./Products/Checkout";
+import SellerOrders from "./Products/SellerOrders";
 
 const router = createBrowserRouter([
     {
@@ -67,6 +69,15 @@ const router = createBrowserRouter([
     {
         path: "/editproduct/:productId",
         element: <EditProduct />
+    },
+    {
+        path: "/checkout",
+        element: <Checkout />
+    },
+
+    {
+        path: "/sellerorders",
+        element: <SellerOrders />
     },
 ]);
 

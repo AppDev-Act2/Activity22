@@ -8,10 +8,10 @@ export default function AddProduct() {
     description: '',
     category: '',
     price: 0,
-    stock_quantity: 0,
     stock_small_size: 0,
     stock_medium_size: 0,
     stock_large_size: 0,
+    image: null,
   });
   const [categories, setCategories] = useState([]);
 
@@ -43,6 +43,13 @@ export default function AddProduct() {
     });
   };
 
+  const handleImageChange = (e) => {
+    setProductData({
+      ...productData,
+      image: e.target.files[0],
+    });
+  };
+
   const handleAddProduct = async () => {
     try {
       const userData = await axios.get('http://127.0.0.1:8000/api/v1/auth/users/me', {
@@ -51,28 +58,35 @@ export default function AddProduct() {
         },
       });
       const userId = userData.data.id;
-
-      const productDataWithUserId = {
-        ...productData,
-        user: userId,
-      };
-
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/add_product/', productDataWithUserId, {
+  
+      const formData = new FormData();
+      formData.append('product_name', productData.product_name);
+      formData.append('description', productData.description);
+      formData.append('category', productData.category);
+      formData.append('price', productData.price);
+      formData.append('stock_small_size', productData.stock_small_size);
+      formData.append('stock_medium_size', productData.stock_medium_size);
+      formData.append('stock_large_size', productData.stock_large_size);
+      formData.append('image', productData.image);
+      formData.append('user', userId); // Append userId as a single value
+  
+      const response = await axios.post('http://127.0.0.1:8000/api/v1/products/', formData, {
         headers: {
+          'Content-Type': 'multipart/form-data',
           Authorization: `Token ${localStorage.getItem('token')}`,
         },
       });
-
+  
       console.log(response.data);
       setProductData({
         product_name: '',
         description: '',
         category: '',
         price: 0,
-        stock_quantity: 0,
         stock_small_size: 0,
         stock_medium_size: 0,
         stock_large_size: 0,
+        image: null,
       });
     } catch (error) {
       console.error('Error adding product:', error.response.data);
@@ -82,7 +96,6 @@ export default function AddProduct() {
   return (
     <div>
       <h1>Add Product</h1>
-      <h1>Check Products</h1>
       {loggedIn ? (
         <form>
           <label htmlFor="product_name">Product Name:</label>
@@ -124,15 +137,6 @@ export default function AddProduct() {
             onChange={handleInputChange}
             required
           />
-          <label htmlFor="stock_quantity">Stock Quantity:</label>
-          <input
-            type="number"
-            id="stock_quantity"
-            name="stock_quantity"
-            value={productData.stock_quantity}
-            onChange={handleInputChange}
-            required
-          />
           <label htmlFor="stock_small_size">Stock Small Size:</label>
           <input
             type="number"
@@ -158,6 +162,15 @@ export default function AddProduct() {
             name="stock_large_size"
             value={productData.stock_large_size}
             onChange={handleInputChange}
+            required
+          />
+          <label htmlFor="image">Image:</label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            onChange={handleImageChange}
             required
           />
           <button type="button" onClick={handleAddProduct}>Add Product</button>
