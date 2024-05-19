@@ -11,8 +11,9 @@ from app.views import (
     EwalletListCreateView, EwalletDetailView,
     CheckoutListCreateView, CheckoutDetailView,
     OrderListCreateView, OrderDetailView,
-    ProductsByCategoryView, SellerOrderListView)
+    ProductsByCategoryView, SellerOrderListView, UserProductListView)
 from app import views
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('auth/', include('djoser.urls')),
@@ -36,6 +37,7 @@ urlpatterns = [
 
     path('products/bycategory/<int:category_id>/', ProductsByCategoryView.as_view(), name='products-by-category'),
     path('seller/orders/', SellerOrderListView.as_view(), name='seller_orders'),
+    path('user/products/', UserProductListView.as_view(), name='user-products'),
 
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

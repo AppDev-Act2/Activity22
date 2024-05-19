@@ -1,30 +1,89 @@
+/* UserProducts.css */
+
 .product-main {
   display: flex;
-  position: relative;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  width: auto;
   justify-content: center;
+  padding: 20px;
 }
 
 .products-container {
   display: grid;
-  width: 80%;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-  padding-right: 20px;
-  background-color: "black";
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
 }
 
-@media (max-width: 800px) {
-  .product-main {
-    justify-content: center;
-    margin-top: 40px;
-  }
+.product-card_wrapper {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
 
-  .products-container {
-    margin-top: 26px;
-    grid-template-columns: 1fr 1fr;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  }
+.product-card_wrapper:hover {
+  transform: translateY(-5px);
+}
+
+.product-card_img {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.product-card_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-card_description {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-card_description h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.product-card_description p {
+  font-size: 1em;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.product-card_bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-card_price {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.product-card_wrapper a {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #3498db;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.product-card_wrapper a:hover {
+  background-color: #2980b9;
 }

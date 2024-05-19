@@ -1,32 +1,34 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import http from '../../utils/fetchFromApi';
 
-
 export default function AddProduct() {
-  const [loggedIn, setLoggedIn] = useState(false);
   const [productData, setProductData] = useState({
     product_name: '',
     description: '',
     category: '',
     price: 0,
-    stock_quantity: 0,
     stock_small_size: 0,
     stock_medium_size: 0,
     stock_large_size: 0,
+    image: null
   });
   const [categories, setCategories] = useState([]);
   const [successPopup, setSuccessPopup] = useState(false); // State for success pop-up
+  const navigate = useNavigate();
 
-  const handleImageChange = (e) => {
-    const imageFile = e.target.files[0]; // Get the selected image file
-    setProductData(prevData => ({
-      ...prevData,
-      image: imageFile
-    }));
+  const isAuthenticated = () => {
+    const token = localStorage.getItem('token');
+    return token !== null;
   };
 
   useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate('/login'); // Redirect to login page if not authenticated
+      return;
+    }
+
     const fetchCategories = async () => {
       try {
         const response = await http.get('categories/');
@@ -37,14 +39,15 @@ export default function AddProduct() {
     };
 
     fetchCategories();
+  }, [navigate]);
 
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
-    }
-  }, []);
+  const handleImageChange = (e) => {
+    const imageFile = e.target.files[0]; // Get the selected image file
+    setProductData(prevData => ({
+      ...prevData,
+      image: imageFile
+    }));
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,15 +72,13 @@ export default function AddProduct() {
       formData.append('description', productData.description);
       formData.append('category', productData.category);
       formData.append('price', adjustedPrice);
-      formData.append('stock_quantity', productData.stock_quantity);
       formData.append('stock_small_size', productData.stock_small_size);
       formData.append('stock_medium_size', productData.stock_medium_size);
       formData.append('stock_large_size', productData.stock_large_size);
       formData.append('image', productData.image); // Append the image file
-
       formData.append('user', userId); // Append the user ID
 
-      const response = await http.post('add_product/', formData, {
+      const response = await http.post('products/', formData, {
         headers: {
           Authorization: `Token ${localStorage.getItem('token')}`,
           'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
@@ -90,10 +91,10 @@ export default function AddProduct() {
         description: '',
         category: '',
         price: 0,
-        stock_quantity: 0,
         stock_small_size: 0,
         stock_medium_size: 0,
         stock_large_size: 0,
+        image: null
       });
       setSuccessPopup(true); // Display success pop-up
     } catch (error) {
@@ -101,11 +102,10 @@ export default function AddProduct() {
     }
   };
 
-
   return (
     <div style={{ margin: '20px auto', maxWidth: '600px', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
       <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Add Product</h1>
-      {loggedIn ? (
+      {isAuthenticated() ? (
         <form encType="multipart/form-data">
           <label htmlFor="product_name" style={{ fontSize: 18 }}>Product Name:</label>
           <input
@@ -146,16 +146,6 @@ export default function AddProduct() {
             id="price"
             name="price"
             value={productData.price}
-            onChange={handleInputChange}
-            style={{ marginBottom: '10px', padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '100%' }}
-            required
-          />
-          <label htmlFor="stock_quantity">Stock Quantity:</label>
-          <input
-            type="number"
-            id="stock_quantity"
-            name="stock_quantity"
-            value={productData.stock_quantity}
             onChange={handleInputChange}
             style={{ marginBottom: '10px', padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '100%' }}
             required
@@ -202,9 +192,13 @@ export default function AddProduct() {
           />
           <button type="button" onClick={handleAddProduct} style={{ backgroundColor: '#007bff', color: '#fff', padding: '10px', borderRadius: '5px', border: 'none', cursor: 'pointer', width: '100%' }}>Add Product</button>
         </form>
-
       ) : (
-        <p style={{ textAlign: 'center' }}>Please log in to add a product</p>
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontSize: '40px' }}>Please log in to add a product</p>
+          <button className="explore-clothing_btn">
+            <Link to="/login">Login</Link>
+          </button>
+        </div>
       )}
       {successPopup && (
         <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'rgba(0, 255, 0, 0.7)', padding: '20px', borderRadius: '5px', zIndex: '9999' }}>

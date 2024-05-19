@@ -1,17 +1,13 @@
 from rest_framework import status  # Add this import
-from rest_framework.decorators import api_view, permission_classes
-from django.views.decorators.http import require_POST
-from rest_framework.response import Response
 from .models import Product, Category, Cart, Review, Ewallet
 from .serializers import ProductSerializer, CategorySerializer, CartSerializer, CheckoutSerializer, OrderSerializer
 
-from rest_framework.renderers import JSONRenderer
-from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from .serializers import CustomUserSerializer, ReviewSerializer, EwalletSerializer
 from rest_framework.views import APIView
-from .models import Cart, Checkout, Order, Ewallet
+from .models import Cart, Checkout, Order, Ewallet, Product
 from rest_framework import generics, permissions
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -83,7 +79,24 @@ class SellerOrderListView(generics.ListAPIView):
     serializer_class = OrderSerializer
 
     def get_queryset(self):
-        # Get the current seller
         current_seller = self.request.user
-        # Filter orders based on products sold by the current seller
         return Order.objects.filter(cart__product__user=current_seller)
+    
+class UserProductListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        current_user = self.request.user
+        if current_user.is_authenticated:
+            return current_user.product_set.all()
+        else:
+            # Return an empty queryset if the user is not authenticated
+            return Product.objects.none()
+        
+class UserProductListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        current_user = self.request.user
+        return Product.objects.filter(user=current_user)

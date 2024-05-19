@@ -1,168 +1,116 @@
-import { useEffect, useState } from "react";
-import ProductCard from "../component/explore/ProductCard";
-import fetchFromApi from "../utils/fetchFromApi";
-import SelectCategory from "../component/explore/SelectCategory";
-import PriceFilter from "../component/explore/PriceFilter";
-import "./ExploreProducts.css";
-import { Link, useParams } from "react-router-dom";
-import Shimmer from "../component/shimmer/Shimmer";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import "../component/explore/ProductCard.css";
-import http from "../utils/fetchFromApi";
+import http from '../utils/fetchFromApi';
 
-
-function ExploreProduct() {
-  //akong version
-  const [djproducts, djsetProducts] = useState([]);
+const UserProductsPage = () => {
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchUserProducts = async () => {
+    const fetchProducts = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (!token) {
-          // If user is not logged in, do not fetch products
-          return;
-        }
-        const userData = await http.get('auth/users/me', {
+        const response = await http.get('user/products/', {
           headers: {
             Authorization: `Token ${token}`,
           },
         });
-        const userId = userData.data.id;
-        const response = await http.get(`/user_products/${userId}/`, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        djsetProducts(response.data);
+        setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
 
-    fetchUserProducts();
+    fetchProducts();
   }, []);
 
-
-
-  //cloned
-  const [products, setProducts] = useState([]);
-  const [priceFlter, setPriceFilter] = useState("default");
-  const [checkBoxState, setCheckBoxState] = useState({
-    men: false,
-    women: false,
-  });
-  let { category } = useParams();
-
-  useEffect(() => {
-    let resetCheckBoxState = {
-      men: false,
-      women: false,
-    };
-    if (category === "all") {
-      setCheckBoxState(resetCheckBoxState);
-      return;
-    }
-    setCheckBoxState({ ...resetCheckBoxState, [category]: true });
-  }, [category]);
-
-  // useEffect(() => {
-  //   async function getData() {
-  //     let res = await fetchFromApi("products");
-  //     function getFilteredData() {
-  //       // if both men and women checkbox are not true than load both men's and women's clothing
-  //       // we are filtering this since the default request also provide result for category that we don't want
-  //       if (!checkBoxState.men && !checkBoxState.women) {
-  //         let filteredData = res.filter((product) => {
-  //           return (
-  //             product.category === "men's clothing" ||
-  //             product.category === "women's clothing"
-  //           );
-  //         });
-  //         return filteredData;
-  //       }
-
-  //       let filteredData = res.filter((product) => {
-  //         if (checkBoxState.men && product.category === "men's clothing") {
-  //           return product;
-  //         } else if (
-  //           checkBoxState.women &&
-  //           product.category === "women's clothing"
-  //         ) {
-  //           return product;
-  //         }
-  //       });
-  //       return filteredData;
-  //     }
-  //     setProducts(getFilteredData());
-  //     setPriceFilter("default");
-  //   }
-  //   getData();
-  // }, [checkBoxState]);
-
-  function handleCategoryCheckBox(e) {
-    let { name, checked } = e.target;
-    setCheckBoxState({ ...checkBoxState, [name]: checked });
-  }
-
-  function handlePriceFilter(e) {
-    let filter = e.target.value;
-    if (filter === "low-to-high") {
-      let priceFilteredData = products
-        .slice()
-        .sort((a, b) => a.price - b.price);
-      setProducts(priceFilteredData);
-    }
-    if (filter === "high-to-low") {
-      let priceFilteredData = products
-        .slice()
-        .sort((a, b) => b.price - a.price);
-      setProducts(priceFilteredData);
-    }
-    setPriceFilter(filter);
-  }
-
   return (
-    <main className="product-main">
-      <div className="products-container">
-        {djproducts.map(product => (
-          <div key={product.id} className="product-card_wrapper">
-            <div className="product-card_img">
-              <img src={`http://192.168.0.213:8000/${product.image}`} />
+    <div style={styles.container}>
+      <h1 style={styles.heading}>Your Products</h1>
+      <div style={styles.productGrid}>
+        {products.map(product => (
+          <div key={product.id} style={styles.productBox}>
+            <div style={styles.imageWrapper}>
+              <img src={product.image} alt={product.product_name} style={styles.image} />
             </div>
-            <div className="product-card_description">
-              <h3>{product.product_name}</h3>
-              <p>{product.description}</p>
-              <span className="product-card_bottom">
-                <b className="product-card_price">P{product.price}</b>
-              </span>
+            <div style={styles.productContent}>
+              <h2 style={styles.productName}>{product.product_name}</h2>
+              <p style={styles.productDescription}>Description: {product.description}</p>
+              <p style={styles.productPrice}>Price: ${product.price}</p>
+              <p style={styles.productStock}>Stock (Small): {product.stock_small_size}</p>
+              <p style={styles.productStock}>Stock (Medium): {product.stock_medium_size}</p>
+              <p style={styles.productStock}>Stock (Large): {product.stock_large_size}</p>
+              <Link to={`/editproduct/${product.id}`} style={styles.editButton}>Edit Product</Link>
             </div>
-            <Link to={`/editproduct/${product.id}`}>Edit Product</Link>
           </div>
         ))}
       </div>
-    </main>
+    </div>
   );
-}
+};
 
-function AllProducts({ products }) {
-  let productCards = products.length ? (
-    products?.map((product) => {
-      return <ProductCard product={product} key={product.id} />;
-    })
-  ) : (
-    <Skeleton />
-  );
+const styles = {
+  container: {
+    margin: '20px',
+    padding: '20px',
+    border: '1px solid #ccc',
+  },
+  heading: {
+    fontSize: '24px',
+    marginBottom: '20px',
+  },
+  productGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: '20px',
+  },
+  productBox: {
+    border: '1px solid #ddd',
+    borderRadius: '5px',
+    overflow: 'hidden',
+  },
+  productContent: {
+    padding: '15px',
+  },
+  productName: {
+    fontSize: '20px',
+    marginBottom: '10px',
+  },
+  productDescription: {
+    fontSize: '16px',
+    marginBottom: '8px',
+  },
+  productPrice: {
+    fontSize: '18px',
+    marginBottom: '8px',
+  },
+  productStock: {
+    fontSize: '16px',
+    marginBottom: '6px',
+  },
+  imageWrapper: {
+    width: '100%',
+    height: '200px',
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: 'auto',
+  },
+  editButton: {
+    display: 'block',
+    marginTop: '10px',
+    padding: '8px 16px',
+    backgroundColor: '#007bff',
+    color: '#fff',
+    textDecoration: 'none',
+    borderRadius: '5px',
+    textAlign: 'center',
+    cursor: 'pointer',
+  },
+};
 
-  return productCards;
-}
-
-function Skeleton() {
-  let a = [];
-  for (let i = 0; i < 4; i++) {
-    a.push(<Shimmer key={i} />);
-  }
-  return a;
-}
-
-export default ExploreProduct;
+export default UserProductsPage;

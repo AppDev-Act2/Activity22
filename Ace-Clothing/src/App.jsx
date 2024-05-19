@@ -22,6 +22,7 @@ import Register from "./authentication/Register";
 import Profile from "./authentication/Profile";
 import Review from "./component/review/Review";
 import Editproduct from "./component/product/Editproduct";
+import Chatbot from "./component/chatbot/Chatbot";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,7 +36,8 @@ const router = createBrowserRouter(
       <Route path="/register" element={<Register />}></Route>
       <Route path="/profile" element={<Profile />}></Route>
       <Route path="/reviews" element={<Review />}></Route>
-      <Route path="/editproduct/:productId" element={<Editproduct />}></Route>
+      <Route path="/editproduct/:id" element={<Editproduct />}></Route>
+      <Route path="/chatbot" element={<Chatbot />}></Route>
     </Route>
   )
 );

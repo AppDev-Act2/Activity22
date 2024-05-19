@@ -66,7 +66,9 @@ const ProductList = () => {
       <div className="product-list">
         {products.map(product => (
           <div key={product.id} className="product">
+            <img src={`${product.image}`} />
             <h3>{product.product_name}</h3>
+            <p>Description: {product.image}</p>
             <p>Description: {product.description}</p>
             <p>Price: ${product.price}</p>
             <button onClick={() => handleAddToCart(product.id)}>Add to Cart</button>

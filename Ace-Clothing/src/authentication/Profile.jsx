@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import http from '../utils/fetchFromApi';
+import { Link } from 'react-router-dom';
 
 
 export default function Profile() {
@@ -83,6 +84,9 @@ export default function Profile() {
             ) : (
                 <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '40px' }}>Please log in to see your profile.</p>
+                    <button className="explore-clothing_btn">
+                        <Link to="/login">Login</Link>
+                    </button>
                 </div>
             )
             }
